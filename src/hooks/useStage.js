@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { createStage } from '../gameHelpers'
 
 export const useStage = (player, resetPlayer) => {
@@ -7,7 +7,6 @@ export const useStage = (player, resetPlayer) => {
 
   useEffect(() => {
     setRowsCleared(0)
-
     const sweepRows = (newStage) =>
       newStage.reduce((ack, row) => {
         if (row.findIndex((cell) => cell[0] === 0) === -1) {
@@ -27,28 +26,28 @@ export const useStage = (player, resetPlayer) => {
       player.tetromino.forEach((row, y) => {
         row.forEach((value, x) => {
           if (value !== 0) {
-            const newY = y + player.pos.y
-            const newX = x + player.pos.x
-            if (newStage[newY] && newStage[newY][newX]) {
-              newStage[newY][newX] = [
-                value,
-                `${player.collided ? 'merged' : 'clear'}`,
-              ]
-            }
+            newStage[y + player.pos.y][x + player.pos.x] = [
+              value,
+              `${player.collided ? 'merged' : 'clear'}`,
+            ]
           }
         })
       })
-
       if (player.collided) {
         resetPlayer()
         return sweepRows(newStage)
       }
-
       return newStage
     }
 
     setStage((prev) => updateStage(prev))
-  }, [player, resetPlayer])
+  }, [
+    player.collided,
+    player.pos.x,
+    player.pos.y,
+    player.tetromino,
+    resetPlayer,
+  ])
 
-  return [stage, setStage]
+  return [stage, setStage, rowsCleared]
 }
