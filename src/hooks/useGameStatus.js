@@ -6,7 +6,7 @@ export const useGameStatus = (rowCleared) => {
   const [rows, setRows] = useState(0)
   const [level, setLevel] = useState(0)
 
-  const [popBgm, punchBgm, gameOverBgm] = useSoundBgm()
+  const [, punchBgm] = useSoundBgm()
   const linePoints = useMemo(() => [40, 100, 300, 1200], [])
 
   const calcScore = useCallback(() => {
@@ -15,7 +15,7 @@ export const useGameStatus = (rowCleared) => {
       setRows((prev) => prev + rowCleared)
       punchBgm()
     }
-  }, [level, linePoints, rowCleared])
+  }, [level, linePoints, rowCleared, punchBgm])
 
   useEffect(() => {
     calcScore()
