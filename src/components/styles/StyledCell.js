@@ -12,4 +12,6 @@ export const StyledCell = styled.div`
   border-top-color: rgba(${(props) => props.color}, 1);
   border-left-color: rgba(${(props) => props.color}, 0.6);
   border-radius: 30%;
+  box-shadow: ${(props) =>
+    props.type !== 0 && '3px 3px 3px rgba(0, 0, 0, 0.5);'};
 `

@@ -11,4 +11,6 @@ export const StyledStage = styled.div`
   width: 100%;
   max-width: 25vw;
   position: relative;
+  padding: 12px;
+  border-radius: 12px;
 `
