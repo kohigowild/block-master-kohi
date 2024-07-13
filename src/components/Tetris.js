@@ -8,6 +8,7 @@ import { usePlayer } from '../hooks/usePlayer'
 import { useStage } from '../hooks/useStage'
 import { useGameStatus } from '../hooks/useGameStatus'
 import { useSoundBgm } from '../hooks/useSoundBgm'
+import { use100vh } from '../hooks/use100vh'
 
 import Stage from './Stage'
 import Display from './Display'
@@ -22,6 +23,7 @@ const Tetris = () => {
   const [score, setScore, rows, setRows, level, setLevel] =
     useGameStatus(rowsCleared)
   const [popBgm, , gameOverBgm] = useSoundBgm()
+  const vh = use100vh()
 
   const movePlayer = (dir) => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
@@ -96,6 +98,7 @@ const Tetris = () => {
         tabIndex='0'
         onKeyDown={(e) => move(e)}
         onKeyUp={keyUp}
+        vh={`${vh}px`}
       >
         <StyledTetris>
           <Stage stage={stage} gameOver={gameOver} callback={startGame} />

@@ -3,11 +3,15 @@ import bgImage from '../../img/bg.jpeg'
 
 export const StyledTetrisWrapper = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: ${(props) => `calc(${props.vh} * 100)`};
   background: url(${bgImage});
   background-size: 900px 660px;
   background-repeat: repeat;
   overflow: hidden;
+
+  @supports (-webkit-touch-callout: none) {
+    min-height: -webkit-fill-available;
+  }
 `
 export const StyledTetris = styled.div`
   display: flex;
