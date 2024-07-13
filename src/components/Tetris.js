@@ -7,6 +7,7 @@ import { useInterval } from '../hooks/useInterval'
 import { usePlayer } from '../hooks/usePlayer'
 import { useStage } from '../hooks/useStage'
 import { useGameStatus } from '../hooks/useGameStatus'
+import { useSoundBgm } from '../hooks/useSoundBgm'
 
 import Stage from './Stage'
 import Display from './Display'
@@ -20,6 +21,7 @@ const Tetris = () => {
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer)
   const [score, setScore, rows, setRows, level, setLevel] =
     useGameStatus(rowsCleared)
+  const [popBgm, punchBgm, gameOverBgm] = useSoundBgm()
 
   const movePlayer = (dir) => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
@@ -57,8 +59,10 @@ const Tetris = () => {
       if (player.pos.y < 1) {
         setGameOver(true)
         setDropTime(null)
+        gameOverBgm()
       }
       updatePlayerPos({ x: 0, y: 0, collided: true })
+      popBgm()
     }
   }
 
