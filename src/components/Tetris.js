@@ -7,6 +7,7 @@ import { useInterval } from '../hooks/useInterval'
 import { usePlayer } from '../hooks/usePlayer'
 import { useStage } from '../hooks/useStage'
 import { useGameStatus } from '../hooks/useGameStatus'
+import { useSoundBgm } from '../hooks/useSoundBgm'
 
 import Stage from './Stage'
 import Display from './Display'
@@ -20,6 +21,7 @@ const Tetris = () => {
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer)
   const [score, setScore, rows, setRows, level, setLevel] =
     useGameStatus(rowsCleared)
+  const [popBgm, punchBgm, gameOverBgm] = useSoundBgm()
 
   const movePlayer = (dir) => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
@@ -57,8 +59,10 @@ const Tetris = () => {
       if (player.pos.y < 1) {
         setGameOver(true)
         setDropTime(null)
+        gameOverBgm()
       }
       updatePlayerPos({ x: 0, y: 0, collided: true })
+      popBgm()
     }
   }
 
@@ -86,28 +90,26 @@ const Tetris = () => {
   }
 
   return (
-    <StyledTetrisWrapper
-      role='button'
-      tabIndex='0'
-      onKeyDown={(e) => move(e)}
-      onKeyUp={keyUp}
-    >
-      <StyledTetris>
-        <Stage stage={stage} />
-        <aside>
-          {gameOver ? (
-            <Display gameOver={gameOver} text='Game Over!' />
-          ) : (
+    <>
+      <StyledTetrisWrapper
+        role='button'
+        tabIndex='0'
+        onKeyDown={(e) => move(e)}
+        onKeyUp={keyUp}
+      >
+        <StyledTetris>
+          <Stage stage={stage} gameOver={gameOver} callback={startGame} />
+          <aside>
             <div>
               <Display text={`Score: ${score}`} />
               <Display text={`rows: ${rows}`} />
               <Display text={`Level: ${level}`} />
+              <StartButton callback={startGame} />
             </div>
-          )}
-          <StartButton callback={startGame} />
-        </aside>
-      </StyledTetris>
-    </StyledTetrisWrapper>
+          </aside>
+        </StyledTetris>
+      </StyledTetrisWrapper>
+    </>
   )
 }
 
