@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyledStage } from './styles/StyledStage'
 import Cell from './Cell'
+import GameOver from './GameOver'
+import StartButton from './StartButton'
 
-export default function Stage({ stage }) {
+export default function Stage({ stage, gameOver, callback }) {
+  const [isStart, setIsStart] = useState(false)
   return (
-    <StyledStage width={stage[0].length} height={stage.length}>
-      {stage.map((row) =>
-        row.map((cell, x) => <Cell key={x} type={cell[0]} />)
-      )}
-    </StyledStage>
+    <>
+      <StyledStage width={stage[0].length} height={stage.length}>
+        {stage.map((row) =>
+          row.map((cell, x) => <Cell key={x} type={cell[0]} />)
+        )}
+        {gameOver && <GameOver callback={callback} />}
+      </StyledStage>
+    </>
   )
 }
